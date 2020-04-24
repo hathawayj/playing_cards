@@ -121,6 +121,8 @@ trelliscope(d[order(d$hand6_1), ], name = "Hand_of_6", path = "docs",
 
 trelliscope(d, name = "Hand_of_7", path = "docs", desc = "Set to show random hand of 7", 
             nrow = 3, ncol = 7, thumb = TRUE, order = 2)
+# "panels/ace_-4-clubs-diamonds-hearts-spades.png"
 
 trelliscope(d[order(d$suite,d$value),], name = "One_Deck", path = "docs", desc = "One deck of cards", nrow = 4, ncol = 13, 
             thumb = TRUE, order = 1)
+# "deck.jpeg"
