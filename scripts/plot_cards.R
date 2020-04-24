@@ -5,7 +5,7 @@ svg_paths <- list.files("data", ".svg", full.names = TRUE)
 #### For Trelliscope Displays
 
 # where the display will be stored
-display_path <- "trelliscopejs"
+display_path <- "docs"
 # where to write individual panels within this directory
 panel_path <- file.path(display_path, "panels/")
 
