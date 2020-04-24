@@ -121,8 +121,13 @@ trelliscope(d[order(d$hand6_1), ], name = "Hand_of_6", path = "docs",
 
 trelliscope(d, name = "Hand_of_7", path = "docs", desc = "Set to show random hand of 7", 
             nrow = 3, ncol = 7, thumb = TRUE, order = 2)
-# "panels/ace_-4-clubs-diamonds-hearts-spades.png"
 
-trelliscope(d[order(d$suite,d$value),], name = "One_Deck", path = "docs", desc = "One deck of cards", nrow = 4, ncol = 13, 
-            thumb = TRUE, order = 1)
-# "deck.jpeg"
+trelliscope(d[order(d$suite,d$value),], name = "one_deck", path = "docs", desc = "One deck of cards", nrow = 4, ncol = 13, thumb = TRUE, order = 1)
+
+thumbnails <- list.files("thumbnails", full.names = TRUE)
+
+fs::file_copy(thumbnails[1], "docs/appfiles/displays/common/Hand_of_6/thumb.png", overwrite = TRUE)
+fs::file_copy(thumbnails[2], "docs/appfiles/displays/common/Hand_of_7/thumb.png", overwrite = TRUE)
+fs::file_copy(thumbnails[3], "docs/appfiles/displays/common/one_deck/thumb.png", overwrite = TRUE)
+fs::file_copy(thumbnails[4], "docs/appfiles/displays/common/Show_mean_hand_6/thumb.png", overwrite = TRUE)
+fs::file_copy(thumbnails[5], "docs/appfiles/displays/common/Show_mean_hand_7/thumb.png", overwrite = TRUE)
