@@ -14,7 +14,7 @@ panel_path <- file.path(display_path, "panels/")
 
 
 d <- tibble(
-  paths = file.path("panels", list.files(panel_path))
+  paths = file.path("panels", list.files(panel_path) %>% str_subset("_[c|d|h|s]"))
 ) %>%
   mutate(name = str_remove(paths, "panels/") %>% str_remove(".png")) %>%
   separate(name , into = c("name", "suite"), sep = "_") %>%
@@ -41,18 +41,86 @@ d <- tibble(
   arrange(hand7_3) %>%
   mutate(panel = trelliscopejs::img_panel_local(paths))
 
+# Can switch to the views idea once I figure out how to do it.
 
-         
 
-trelliscope(d[order(d$suite,d$value),], name = "one_deck", path = "docs", desc = "One deck of cards", nrow = 4, ncol = 13, 
-            thumb = TRUE)
 
-trelliscope(d, name = "hand_7", path = "docs", desc = "Set to show random hand of 7", 
-            nrow = 3, ncol = 7, thumb = TRUE)
+paths_all <- list.files(path = "docs/panels", full.names = TRUE ) %>%
+  str_remove_all("docs/")
 
-trelliscope(d[order(d$hand6_1), ], name = "hand_6", path = "docs", 
+d_mean7 <- d %>%
+  group_by(hand7_1, value, name) %>%
+  summarize(n = n(), suites = str_c(sort(suite), collapse = "-")) %>%
+  ungroup() %>%
+  complete(hand7_1, value = 1:13, fill = list(n = 0, suites = "blank", name = "blank")) %>%
+  arrange(hand7_1) %>%
+  mutate(rows = 1:n()) %>%
+  group_by(rows)
+
+mean_trell7 <- bind_rows(
+  d_mean7 %>% 
+    filter(n == 0) %>% 
+    mutate(path = "panels/blank.png"),
+  
+  d_mean7 %>% 
+    filter(n ==1) %>% 
+    mutate(path = str_subset(paths_all, str_c("_", suites)) %>% str_subset(name)),
+  
+  
+  d_mean7 %>% 
+    filter(n %in% 2:4) %>% 
+    mutate(path = str_subset(paths_all, suites) %>% 
+             str_subset(str_c(name, "_")) %>% 
+             str_subset(str_c("-", n, "-")))
+
+) %>% ungroup() %>%
+  arrange(hand7_1, value) %>%
+  mutate(panel = trelliscopejs::img_panel_local(path))
+
+
+
+d_mean6 <- d %>%
+  group_by(hand6_1, value, name) %>%
+  summarize(n = n(), suites = str_c(sort(suite), collapse = "-")) %>%
+  ungroup() %>%
+  complete(hand6_1, value = 1:13, fill = list(n = 0, suites = "blank", name = "blank")) %>%
+  arrange(hand6_1) %>%
+  mutate(rows = 1:n()) %>%
+  group_by(rows)
+
+mean_trell6 <- bind_rows(
+  d_mean6 %>% 
+    filter(n == 0) %>% 
+    mutate(path = "panels/blank.png"),
+  
+  d_mean6 %>% 
+    filter(n ==1) %>% 
+    mutate(path = str_subset(paths_all, str_c("_", suites)) %>% str_subset(name)),
+  
+  d_mean6 %>% 
+    filter(n %in% 2:4) %>% 
+    mutate(path = str_subset(paths_all, suites) %>% 
+             str_subset(str_c(name, "_")) %>% 
+             str_subset(str_c("-", n, "-")))
+  
+) %>% ungroup() %>%
+  arrange(hand6_1, value) %>%
+  mutate(panel = trelliscopejs::img_panel_local(path))
+
+
+trelliscope(mean_trell6, name = "Show_mean_hand_6", path = "docs", desc = "Set to show random hand of 6 with blank values", 
+            nrow = 6, ncol = 13, thumb = TRUE, order = 5)
+
+
+trelliscope(mean_trell7, name = "Show_mean_hand_7", path = "docs", desc = "Set to show random hand of 7 with blank values", 
+            nrow = 7, ncol = 13, thumb = TRUE, order = 4)
+
+trelliscope(d[order(d$hand6_1), ], name = "Hand_of_6", path = "docs", 
             desc = "Set to show random hand of 6", 
-            nrow = 3, ncol = 6, thumb = TRUE)
+            nrow = 3, ncol = 6, thumb = TRUE, order = 3)
 
+trelliscope(d, name = "Hand_of_7", path = "docs", desc = "Set to show random hand of 7", 
+            nrow = 3, ncol = 7, thumb = TRUE, order = 2)
 
-
+trelliscope(d[order(d$suite,d$value),], name = "One_Deck", path = "docs", desc = "One deck of cards", nrow = 4, ncol = 13, 
+            thumb = TRUE, order = 1)
