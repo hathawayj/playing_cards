@@ -109,18 +109,18 @@ mean_trell6 <- bind_rows(
 
 
 trelliscope(mean_trell6, name = "Show_mean_hand_6", path = "docs", desc = "Set to show random hand of 6 with blank values", 
-            nrow = 6, ncol = 13, thumb = TRUE, order = 5)
+            nrow = 1, ncol = 13, thumb = TRUE, order = 5)
 
 
 trelliscope(mean_trell7, name = "Show_mean_hand_7", path = "docs", desc = "Set to show random hand of 7 with blank values", 
-            nrow = 7, ncol = 13, thumb = TRUE, order = 4)
+            nrow = 1, ncol = 13, thumb = TRUE, order = 4)
 
 trelliscope(d[order(d$hand6_1), ], name = "Hand_of_6", path = "docs", 
             desc = "Set to show random hand of 6", 
-            nrow = 3, ncol = 6, thumb = TRUE, order = 3)
+            nrow = 1, ncol = 6, thumb = TRUE, order = 3)
 
 trelliscope(d, name = "Hand_of_7", path = "docs", desc = "Set to show random hand of 7", 
-            nrow = 3, ncol = 7, thumb = TRUE, order = 2)
+            nrow = 1, ncol = 7, thumb = TRUE, order = 2)
 
 trelliscope(d[order(d$suite,d$value),], name = "one_deck", path = "docs", desc = "One deck of cards", nrow = 4, ncol = 13, thumb = TRUE, order = 1)
 
